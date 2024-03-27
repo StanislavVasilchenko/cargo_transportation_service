@@ -14,16 +14,20 @@ class CargoCreateAPIView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
-        try:
-            start = Location.objects.get(zipcode=zip_code_checker(request.data['start_location']))
-            end = Location.objects.get(zipcode=zip_code_checker(request.data['end_location']))
-        except Location.DoesNotExist:
-            return Response({'error': 'Invalid zipcode'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            try:
+                start = Location.objects.get(zipcode=zip_code_checker(request.data['start_location']))
+                end = Location.objects.get(zipcode=zip_code_checker(request.data['end_location']))
+            except Location.DoesNotExist:
+                return Response({'error': 'Invalid zipcode'}, status=status.HTTP_400_BAD_REQUEST)
 
-        new_cargo = Cargo.objects.create(
-            start_location=start,
-            end_location=end,
-            description=request.data.get('description')
-        )
-        new_cargo.save()
-        return Response(CargoSerializer(new_cargo).data, status=status.HTTP_201_CREATED)
+            new_cargo = Cargo.objects.create(
+                start_location=start,
+                end_location=end,
+                description=request.data.get('description'),
+                weight=request.data.get('weight')
+            )
+            new_cargo.save()
+            return Response(CargoSerializer(new_cargo).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
