@@ -16,3 +16,12 @@ def read_csv_locations():
             }
             data.append(data_csv)
         return data
+
+
+def zip_code_checker(zipcode: str) -> str | None:
+    length = len(zipcode)
+    if length < 5:
+        difference = 5 - length
+        new_zipcode = "0" * difference + zipcode
+        return new_zipcode
+    return zipcode
