@@ -20,7 +20,9 @@ class CargoListSerializer(CargoSerializer):
         lat_obj = obj.start_location.latitude
         lon_obj = obj.start_location.longitude
         for car in cars:
-            if get_distance(lat_obj, lon_obj, car.current_location.latitude, car.current_location.longitude) <= 450:
+            lat_car = car.current_location.latitude
+            lon_car = car.current_location.longitude
+            if get_distance(lat_obj, lon_obj, lat_car, lon_car) <= 450:
                 result.append(car)
         return len(result)
 
