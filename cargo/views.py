@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from cargo.models import Cargo
-from cargo.serializers import CargoSerializer, CargoListSerializer, CargoDetailSerializer
+from cargo.serializers import CargoSerializer, CargoListSerializer, CargoDetailSerializer, CargoUpdateSerializer
 from location.models import Location
 from location.services import zip_code_checker
 
@@ -43,3 +43,17 @@ class CargoDetailAPIView(generics.RetrieveAPIView):
     queryset = Cargo.objects.all()
     serializer_class = CargoDetailSerializer
     permission_classes = [AllowAny]
+
+
+class CargoUpdateAPIView(generics.UpdateAPIView):
+    queryset = Cargo.objects.all()
+    serializer_class = CargoUpdateSerializer
+    permission_classes = [AllowAny]
+
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save(
+                weight=self.request.data.get('weight'),
+                description=self.request.data.get('description')
+            )
+
