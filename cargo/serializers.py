@@ -48,3 +48,9 @@ class CargoDetailSerializer(CargoSerializer):
     class Meta:
         model = Cargo
         fields = ('start_location', 'end_location', 'weight', 'description', 'cars_list')
+
+
+class CargoUpdateSerializer(CargoSerializer):
+    class Meta:
+        model = Cargo
+        fields = ('weight', 'description',)
