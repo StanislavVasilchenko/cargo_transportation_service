@@ -3,7 +3,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from cargo.models import Cargo
-from cargo.serializers import CargoSerializer
+from cargo.serializers import CargoSerializer, CargoListSerializer
 from location.models import Location
 from location.services import zip_code_checker
 
@@ -31,3 +31,9 @@ class CargoCreateAPIView(generics.CreateAPIView):
             new_cargo.save()
             return Response(CargoSerializer(new_cargo).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CargoListAPIView(generics.ListAPIView):
+    queryset = Cargo.objects.all()
+    serializer_class = CargoListSerializer
+    permission_classes = [AllowAny]
