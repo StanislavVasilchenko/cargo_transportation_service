@@ -10,3 +10,9 @@ class CarSerializer(serializers.ModelSerializer):
         exclude = ('current_location',)
         validators = [CarNumberValidator(field='number'),
                       CarLiftingValidator(field='lifting_capacity')]
+
+
+class CarUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ('current_location',)
