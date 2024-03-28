@@ -57,3 +57,8 @@ class CargoUpdateAPIView(generics.UpdateAPIView):
                 description=self.request.data.get('description')
             )
 
+
+class CargoDeleteAPIView(generics.DestroyAPIView):
+    queryset = Cargo.objects.all()
+    serializer_class = CargoSerializer
+    permission_classes = [AllowAny]
