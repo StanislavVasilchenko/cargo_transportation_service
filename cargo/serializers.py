@@ -30,3 +30,21 @@ class CargoListSerializer(CargoSerializer):
         model = Cargo
         fields = ('start_location', 'end_location', 'cars')
 
+
+class CargoDetailSerializer(CargoSerializer):
+    cars_list = serializers.SerializerMethodField()
+
+    def get_cars_list(self, obj):
+        cars = Car.objects.all()
+        lat_obj = obj.start_location.latitude
+        lon_obj = obj.start_location.longitude
+        cars_list = [
+            {"car_number": car.number,
+             "distance": round(get_distance(lat_obj, lon_obj,
+                                            car.current_location.latitude, car.current_location.longitude), 2)}
+            for car in cars]
+        return cars_list
+
+    class Meta:
+        model = Cargo
+        fields = ('start_location', 'end_location', 'weight', 'description', 'cars_list')
