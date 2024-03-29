@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-(y=+0i7=0rfm^33=v8l0r8bwpij-sv&z@p^hp#g8#%5(d(tbio
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,6 +87,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cargo_dlv',
         'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db'
 
     }
 }
@@ -139,8 +141,8 @@ REST_FRAMEWORK = {
     )
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_TIMEZONE = 'Europe/Moscow'
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
