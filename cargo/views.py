@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -37,6 +38,8 @@ class CargoListAPIView(generics.ListAPIView):
     queryset = Cargo.objects.all()
     serializer_class = CargoListSerializer
     permission_classes = [AllowAny]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_fields = ({'weight': ['lte']})
 
 
 class CargoDetailAPIView(generics.RetrieveAPIView):

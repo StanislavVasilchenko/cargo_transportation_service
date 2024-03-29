@@ -1,7 +1,8 @@
 from django.urls import path
 
 from cargo.apps import CargoConfig
-from cargo.views import CargoCreateAPIView, CargoListAPIView, CargoDetailAPIView, CargoUpdateAPIView, CargoDeleteAPIView
+from cargo.views import CargoCreateAPIView, CargoListAPIView, CargoDetailAPIView, CargoUpdateAPIView, \
+    CargoDeleteAPIView
 
 app_name = CargoConfig.name
 
