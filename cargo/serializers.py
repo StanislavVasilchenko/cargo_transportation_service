@@ -12,9 +12,9 @@ class CargoSerializer(serializers.ModelSerializer):
 
 
 class CargoListSerializer(CargoSerializer):
-    cars = serializers.SerializerMethodField()
+    cars_info = serializers.SerializerMethodField()
 
-    def get_cars(self, obj):
+    def get_cars_info(self, obj):
         result = []
         cars = Car.objects.all()
         lat_obj = obj.start_location.latitude
@@ -22,13 +22,14 @@ class CargoListSerializer(CargoSerializer):
         for car in cars:
             lat_car = car.current_location.latitude
             lon_car = car.current_location.longitude
-            if get_distance(lat_obj, lon_obj, lat_car, lon_car) <= 450:
-                result.append(car)
-        return len(result)
+            miles = get_distance(lat_obj, lon_obj, lat_car, lon_car)
+            if miles <= 450:
+                result.append({car.number: round(miles, 0)})
+        return {'count': len(result), 'cars': result}
 
     class Meta:
         model = Cargo
-        fields = ('start_location', 'end_location', 'cars')
+        fields = ('weight', 'start_location', 'end_location', 'cars_info')
 
 
 class CargoDetailSerializer(CargoSerializer):
